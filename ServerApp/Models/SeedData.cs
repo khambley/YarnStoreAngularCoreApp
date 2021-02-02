@@ -263,8 +263,7 @@ namespace ServerApp.Models
 						new Rating { Stars = 3 }}
 				});
 				context.SaveChanges();
-			}
-			
+			}	
 		}
 	}
 }

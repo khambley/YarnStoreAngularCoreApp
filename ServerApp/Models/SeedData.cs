@@ -75,7 +75,7 @@ namespace ServerApp.Models
 				{
 					Name = "Archipelago Sprout Worsted Superwash",
 					Category = "Yarn",
-					Description = "Archipelago\" swirled with Night Zone and Wenge on a Clearwater background.",
+					Description = "Archipelago swirled with Night Zone and Wenge on a Clearwater background.",
 					YarnType = "Worsted",
 					Weight = 136,
 					Yardage = 250.0,

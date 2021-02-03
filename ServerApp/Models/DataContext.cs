@@ -10,7 +10,11 @@ namespace ServerApp.Models
 	{
 		public DataContext(DbContextOptions<DataContext> opts) : base(opts) { }
 		public DbSet<Product> Products { get; set; }
+		public DbSet<Yarn> Yarns { get; set; }
+		public DbSet<Needles> NeedlesList { get; set; }
 		public DbSet<Supplier> Suppliers { get; set; }
 		public DbSet<Rating> Ratings { get; set; }
+		public DbSet<ImageFileName> ImageFileNames { get; set; }
+
 	}
 }

@@ -11,16 +11,21 @@ namespace ServerApp.Controllers
 {
     public class HomeController : Controller
     {
+        private DataContext _context;
+
+
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, DataContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            // Added just to smoke test db connection and migrations pg. 51, first product object passed to view.
+            return View(_context.Products.First());
         }
 
         public IActionResult Privacy()

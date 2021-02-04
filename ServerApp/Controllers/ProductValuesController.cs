@@ -23,6 +23,8 @@ namespace ServerApp.Controllers
 		[HttpGet("{id}")]
 		public Product GetProduct(long id)
 		{
+			// Add a delay to simulate async requests on a production server.
+			System.Threading.Thread.Sleep(5000);
 			// This is to smoke test the web service endpoint. You should see JSON data in the web browser.
 			return _context.Products.Find(id);
 		}

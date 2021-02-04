@@ -4,7 +4,8 @@ import { HttpClient } from "@angular/common/http";
 
 @Injectable() //Only used when there is a dependency injected into the constructor. pg. 80
 export class Repository {
-  product: Product;
+  //product: Product;
+  productData: Product;
 
   // support for HTTP requestsis provided by the HTTPClient class, DI here.
   constructor(private http: HttpClient) {
@@ -18,6 +19,14 @@ export class Repository {
   getProduct(id: number) {
     // This is an observable method and returns an Observable<Product> object, kind of like an asynchronous .NET task. pg. 80
     this.http.get<Product>("/api/products/" + id)
-      .subscribe(p => this.product = p);
+      //.subscribe(p => this.product = p);
+      .subscribe(p => {
+        this.productData = p;
+        console.log("Product Data Received");
+      });
+  }
+  get product(): Product {
+    console.log("Product Data Requested");
+    return this.productData;
   }
 }

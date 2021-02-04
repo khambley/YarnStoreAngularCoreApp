@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ServerApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ServerApp.Controllers
 {
@@ -24,9 +25,15 @@ namespace ServerApp.Controllers
 		public Product GetProduct(long id)
 		{
 			// Add a delay to simulate async requests on a production server.
-			System.Threading.Thread.Sleep(5000);
+			//System.Threading.Thread.Sleep(5000);
 			// This is to smoke test the web service endpoint. You should see JSON data in the web browser.
-			return _context.Products.Find(id);
+			return _context.Products
+				.Include(p => p.Supplier)
+				.Include(p => p.Ratings)
+				.Include(p => p.ImageFiles)
+				.FirstOrDefault(p => p.ProductId == id);
+
+
 		}
 	}
 }

@@ -26,14 +26,48 @@ namespace ServerApp.Controllers
 		{
 			// Add a delay to simulate async requests on a production server.
 			//System.Threading.Thread.Sleep(5000);
-			// This is to smoke test the web service endpoint. You should see JSON data in the web browser.
-			return _context.Products
-				.Include(p => p.Supplier)
+			
+			Product result = _context.Products
+				.Include(p => p.Supplier).ThenInclude(s => s.Products) //If you want all the products under a certain Supplier...
 				.Include(p => p.Ratings)
 				.Include(p => p.ImageFiles)
 				.FirstOrDefault(p => p.ProductId == id);
 
+			// Solves circular reference, JSON serialization error when including nav properties.
+			if(result != null)
+			{
+				if(result.Supplier != null)
+				{
+					// result.Supplier.Products = null; 
+					// Instead of setting Supplier.Products to null, new product objects w/o circular ref to the Supplier
+					// are created using LINQ Select method
+					result.Supplier.Products = result.Supplier.Products.Select(p =>
+						new Product
+						{
+							ProductId = p.ProductId,
+							Name = p.Name,
+							Category = p.Category,
+							Description = p.Description,
+							Price = p.Price,
+						});
 
+				}
+				if(result.Ratings != null)
+				{
+					foreach(Rating r in result.Ratings)
+					{
+						r.Product = null;
+					}
+				}
+				if(result.ImageFiles != null)
+				{
+					foreach(ImageFileName fn in result.ImageFiles)
+					{
+						fn.Product = null;
+					}
+				}
+			}
+			return result;
 		}
 	}
 }

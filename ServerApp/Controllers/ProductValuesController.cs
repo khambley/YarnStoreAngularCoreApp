@@ -7,7 +7,8 @@ using ServerApp.Models;
 
 namespace ServerApp.Controllers
 {
-	
+	// see https://localhost:5001/swagger/index.html to view entities in the browser
+
 	[Route("api/products")]
 	[ApiController]
 	public class ProductValuesController : Controller
@@ -22,13 +23,8 @@ namespace ServerApp.Controllers
 		[HttpGet("{id}")]
 		public Product GetProduct(long id)
 		{
-			// This is to smoke test the web service endpoint
+			// This is to smoke test the web service endpoint. You should see JSON data in the web browser.
 			return _context.Products.Find(id);
-		}
-
-		public IActionResult Index()
-		{
-			return View();
 		}
 	}
 }

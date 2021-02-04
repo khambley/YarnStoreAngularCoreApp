@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using ServerApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 namespace ServerApp
 {
@@ -31,6 +32,10 @@ namespace ServerApp
                 options.UseSqlServer(connectionString));
 
             services.AddControllersWithViews();
+            services.AddSwaggerGen(options => {
+                options.SwaggerDoc("v1",
+                new OpenApiInfo { Title = "My Yarn Shop API", Version = "v1" });
+            });
         }
         
 
@@ -59,6 +64,11 @@ namespace ServerApp
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+            app.UseSwagger();
+            app.UseSwaggerUI(options => {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json",
+                "My Yarn Shop API");
             });
 
             app.UseSpa(spa =>

@@ -31,7 +31,11 @@ namespace ServerApp
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(connectionString));
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddJsonOptions(opts =>
+				{
+                    opts.JsonSerializerOptions.IgnoreNullValues = true;
+				});
             services.AddSwaggerGen(options => {
                 options.SwaggerDoc("v1",
                 new OpenApiInfo { Title = "My Yarn Shop API", Version = "v1" });

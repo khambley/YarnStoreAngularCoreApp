@@ -1,5 +1,10 @@
 <div class="p-2">
+  <h4>Yarns List</h4>
   <table class="table table-sm">
+    <tr>
+      <th>Image</th>
+      <td><img src="images/{{product?.imageFiles[0].fileName}}" style="width: 100px;"/></td>
+    </tr>
     <tr>
       <th>Name</th>
       <td>{{product?.name || 'Loading Data...'}}</td>
@@ -16,6 +21,26 @@
       <th>Price</th>
       <td>{{product?.price|| 'Loading Data...'}}</td>
     </tr>
+    <tr>
+      <th colspan="2" class="bg-info">Supplier</th>
+    </tr>
+    <tr>
+      <th>Name</th>
+      <td>{{product?.supplier?.name}}</td>
+    </tr>
+    <tr>
+      <th>City</th>
+      <td>{{product?.supplier?.city}}</td>
+    </tr>
+    <tr>
+      <th>State</th>
+      <td>{{product?.supplier?.state}}</td>
+    </tr>
+    <tr>
+      <th>Products</th>
+      <td>{{product?.supplier?.products?.length}}</td>
+    </tr>
+
   </table>
 </div>
 <router-outlet></router-outlet>

@@ -10,7 +10,12 @@ import { Product } from "./models/product.model";
 export class AppComponent {
   constructor(private repo: Repository) { }
 
+  // these methods allow the template to data access through the repo.
   get product(): Product {
     return this.repo.product;
+  }
+
+  get products(): Product[] {
+    return this.repo.products;
   }
 }

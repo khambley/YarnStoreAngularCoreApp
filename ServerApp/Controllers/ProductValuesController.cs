@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ServerApp.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace ServerApp.Controllers
 {
@@ -20,7 +21,7 @@ namespace ServerApp.Controllers
 			_context = context;
 		}
 
-		//web service endpoint https://localhost:5001/api/products/1
+		// GetProduct - get one product with Id, web service endpoint https://localhost:5001/api/products/1
 		[HttpGet("{id}")]
 		public Product GetProduct(long id)
 		{
@@ -68,6 +69,38 @@ namespace ServerApp.Controllers
 				}
 			}
 			return result;
-		}
+		} // end GetProduct
+
+		// GetProducts - get multiple products list, web service endpoint https://localhost:5001/api/products?related=true
+		[HttpGet]
+		public IEnumerable<Product> GetProducts(bool related = false)
+		{
+			IQueryable<Product> query = _context.Products;
+			if (related)
+			{
+				query = query.Include(p => p.Supplier).Include(p => p.Ratings);
+				List<Product> data = query.ToList();
+				data.ForEach(p =>
+				{
+					if (p.Supplier != null)
+					{
+						p.Supplier.Products = null;
+					}
+					if (p.Ratings != null)
+					{
+						p.Ratings.ForEach(r => r.Product = null);
+					}
+					if(p.ImageFiles != null)
+					{
+						p.ImageFiles.ForEach(fn => fn.Product = null);
+					}
+				});
+				return data;
+			}
+			else
+			{
+				return query; 
+			}
+		} // end GetProducts
 	}
 }

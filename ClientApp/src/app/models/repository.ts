@@ -2,31 +2,37 @@ import { Product } from "./product.model";
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 
-@Injectable() //Only used when there is a dependency injected into the constructor. pg. 80
+// @Injectable decorator only used when there is a dependency injected into the constructor. pg. 80
+// Support for HTTP requests is provided by the HTTPClient class DI in the constructor.
+// This is just to test inside the constructor to see if the repository is working, no HTTP web service yet. pg.60
+// this.product = JSON.parse(document.getElementById("data").textContent);
+// this is using Http web service instead of static data inside constructor pg. 79 this.getProduct(1)
+// this.http.get<Product>("/api/products/" + id)"This is an observable method and returns an Observable<Product> object,
+// kind of like an asynchronous.NET task.pg. 80
+
+const productsUrl = "/api/products";
+
+@Injectable() 
 export class Repository {
-  //product: Product;
-  productData: Product;
+  product: Product;
+  products: Product[];
 
-  // support for HTTP requestsis provided by the HTTPClient class, DI here.
   constructor(private http: HttpClient) {
-    // this is just to test to see if the repository is working, no HTTP web service yet. pg.60
-    //this.product = JSON.parse(document.getElementById("data").textContent);
+    
+    this.getProducts(true);
+  }
 
-    // using Http web service instead of static data pg. 79
-    this.getProduct(1);
-  }
-  
+  // gets one product by id
   getProduct(id: number) {
-    // This is an observable method and returns an Observable<Product> object, kind of like an asynchronous .NET task. pg. 80
-    this.http.get<Product>("/api/products/" + id)
-      //.subscribe(p => this.product = p);
-      .subscribe(p => {
-        this.productData = p;
-        console.log("Product Data Received");
-      });
-  }
-  get product(): Product {
-    console.log("Product Data Requested");
-    return this.productData;
+    this.http.get<Product>(`${productsUrl}/${id}`)
+      .subscribe(p => this.product = p);
+  };
+
+  // gets all products and related data available.
+  getProducts(related = false) {
+    this.http.get<Product[]>(`${productsUrl}?related=${related}`)
+      .subscribe(prods => this.products = prods);
   }
 }
+
+

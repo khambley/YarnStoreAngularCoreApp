@@ -64,6 +64,10 @@ namespace ServerApp.Controllers
 				{
 					foreach(ImageFileName fn in result.ImageFiles)
 					{
+						if(fn != null)
+						{
+							
+						}
 						fn.Product = null;
 					}
 				}
@@ -78,7 +82,7 @@ namespace ServerApp.Controllers
 			IQueryable<Product> query = _context.Products;
 			if (related)
 			{
-				query = query.Include(p => p.Supplier).Include(p => p.Ratings);
+				query = query.Include(p => p.Supplier).Include(p => p.Ratings).Include(p => p.ImageFiles);
 				List<Product> data = query.ToList();
 				data.ForEach(p =>
 				{

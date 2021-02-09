@@ -75,26 +75,26 @@ namespace ServerApp
                 "My Yarn Shop API");
             });
 
-            app.UseSpa(spa =>
-            {
-                //spa.Options.SourcePath = "../ClientApp";
-                //spa.UseAngularCliServer("start");
+			app.UseSpa(spa =>
+			{
+				//spa.Options.SourcePath = "../ClientApp";
+				//spa.UseAngularCliServer("start");
 
-                // Essential Angular pg.35 Using the ASP.NET Core MVC Proxy Feature
-                string strategy = Configuration.GetValue<string>("DevTools:ConnectionStrategy");
+				// Essential Angular pg.35 Using the ASP.NET Core MVC Proxy Feature
+				string strategy = Configuration.GetValue<string>("DevTools:ConnectionStrategy");
 
-                if(strategy == "proxy")
+				if (strategy == "proxy")
 				{
-                    spa.UseProxyToSpaDevelopmentServer("http://127.0.0.1:4200");
-				} 
-                else if (strategy == "managed")
+					spa.UseProxyToSpaDevelopmentServer("http://127.0.0.1:4200");
+				}
+				else if (strategy == "managed")
 				{
 					spa.Options.SourcePath = "../ClientApp";
 					spa.UseAngularCliServer("start");
 				}
-            });
+			});
 
-            SeedData.SeedDatabase(services.GetRequiredService<DataContext>());
+			SeedData.SeedDatabase(services.GetRequiredService<DataContext>());
         }
     }
 }
